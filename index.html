@@ -5,44 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Příběh písma — 550. výročí českého knihtisku</title>
 <meta name="description" content="Interaktivní prezentace Knihovny Památníku národního písemnictví o vývoji českého typografického písma.">
-<link rel="stylesheet" href="assets/style.css?v=20260921-3">
+<meta name="theme-color" content="#17150f">
+<link rel="preload" href="assets/fonts/InstrumentSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/InstrumentSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css?v=20260922-1">
 </head>
 <body>
 
-<div id="stage" class="stage" role="application" aria-label="Prezentace Příběh písma">
+<div id="app" class="app" role="application" aria-roledescription="prezentace" aria-label="Příběh písma">
   <div id="viewport" class="viewport">
-    <div id="world" class="world"></div>
+    <div id="stage" class="stage"></div>
   </div>
 
-  <div id="vignette" class="vignette" aria-hidden="true"></div>
-
-  <header class="hud hud-top">
-    <div class="brand">
-      <span class="brand-mark">Aa</span>
-      <span class="brand-text">Příběh písma</span>
+  <div class="ui" id="ui">
+    <div class="ui-progress" aria-hidden="true"><span id="progressFill"></span></div>
+    <div class="ui-bar">
+      <div class="ui-count" aria-live="polite"><span id="countCurrent">01</span><span class="ui-count-sep">/</span><span id="countTotal">26</span></div>
+      <div class="ui-actions">
+        <button id="prevBtn" class="ui-btn" type="button" aria-label="Předchozí slajd" title="Předchozí (←)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button id="nextBtn" class="ui-btn ui-btn-primary" type="button" aria-label="Další slajd" title="Další (→)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <span class="ui-divider" aria-hidden="true"></span>
+        <button id="gridBtn" class="ui-btn" type="button" aria-label="Přehled slajdů" title="Přehled (G)">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1"/></svg>
+        </button>
+        <button id="fullscreenBtn" class="ui-btn" type="button" aria-label="Celá obrazovka" title="Celá obrazovka (F)">
+          <svg class="ico-enter" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+          <svg class="ico-exit" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>
+        </button>
+      </div>
     </div>
-    <div class="counter"><span id="counterCurrent">1</span><span class="counter-sep">/</span><span id="counterTotal">26</span></div>
-    <button id="fullscreenBtn" class="icon-btn" type="button" aria-label="Celá obrazovka" title="Celá obrazovka">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-    </button>
-  </header>
+  </div>
 
-  <div class="progress-track" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
+  <div id="overview" class="overview" hidden>
+    <div class="overview-head">
+      <span class="overview-title">Příběh písma</span>
+      <button id="overviewClose" class="ui-btn" type="button" aria-label="Zavřít přehled" title="Zavřít (Esc)">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div id="overviewGrid" class="overview-grid"></div>
+  </div>
 
-  <nav class="hud hud-bottom">
-    <button id="prevBtn" class="nav-btn" type="button" aria-label="Předchozí slide">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  <div id="lightbox" class="lightbox" hidden>
+    <figure class="lightbox-figure">
+      <img id="lightboxImg" alt="">
+      <figcaption id="lightboxCap" class="cap"></figcaption>
+    </figure>
+    <button id="lightboxClose" class="ui-btn lightbox-close" type="button" aria-label="Zavřít náhled" title="Zavřít (Esc)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
-    <div id="sectionLabel" class="section-label">Příběh písma</div>
-    <button id="nextBtn" class="nav-btn" type="button" aria-label="Další slide">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-  </nav>
-
-  <div id="hint" class="hint">Šipky / kolečko myši / swipe pro pohyb — klikněte mimo slide pro přehled všech kapitol</div>
+  </div>
 </div>
 
 <script src="assets/data.js?v=20260921-2"></script>
-<script src="assets/app.js?v=20260921-2"></script>
+<script src="assets/app.js?v=20260922-1"></script>
 </body>
 </html>
