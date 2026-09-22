@@ -1,32 +1,32 @@
-# Příběh písma — interaktivní prezentace (Prezi styl)
+# Příběh písma — interaktivní prezentace
 
 Statická webová aplikace bez závislostí (vanilla HTML/CSS/JS), vytvořená z obsahu
 `Prezentace_Vyroci_knihtisku_email.pptx`. Texty a obrázky jsou beze změny, pořadí
-kapitol odpovídá originální prezentaci. Místo klasického "slide vpřed/vzad" kamera
-plynule panoramuje a přibližuje/oddaluje mezi jednotlivými "rámy" rozmístěnými na
-velkém plátně — efekt podobný Prezi.
+kapitol odpovídá originální prezentaci.
 
-## Struktura
+## Vizuální systém „Rubrika“
 
-```
-prezi-vyroci-knihtisku/
-├── index.html          # kostra stránky + HUD ovládání
-├── assets/
-│   ├── style.css        # veškerý vizuální styl
-│   ├── app.js           # render slajdů, rozložení plátna, kamera, ovládání
-│   ├── data.js           # obsahová data (texty, obrázky, tabulka) — zdroj pravdy
-│   └── img/              # exportované obrázky z .pptx
-└── README.md
-```
+Papír, inkoust a jediná rumělková červená — odkaz na rubrikaci rukopisů a raných tisků.
+Designová filozofie je v [`design/RUBRIKA-design-philosophy.md`](design/RUBRIKA-design-philosophy.md),
+key visual v `design/rubrika-key-visual.png`.
+
+- **Paleta:** papír `#F3EEE4`, inkoust `#17150F`, rumělka `#D2402A`, grafit `#857D6E`
+- **Písma** (self-hosted, SIL OFL 1.1, `assets/fonts/`): Instrument Serif (titulky),
+  Instrument Sans (text), IBM Plex Mono (inventární čísla, pagina)
+- **Scéna 1920 × 1080** se celá škáluje do okna/iframu — rozvržení je na každé obrazovce stejné.
+- **Automatická sazba obrázků:** `app.js` pro každý slajd vyzkouší šířky textového sloupce,
+  velikosti písma a rozložení obrázků do řádků/sloupců a vybere variantu s největšími
+  obrázky při čitelném textu. Obrázky se nezvětšují nad 3,4× zdrojové velikosti.
+- Kliknutím na obrázek se otevře zvětšený náhled s popiskem.
 
 ## Ovládání
 
-- šipky ← → / ↑ ↓, mezerník, Backspace — pohyb mezi slajdy (v pevném pořadí)
+- šipky ← → / ↑ ↓, mezerník, PageUp/PageDown — pohyb mezi slajdy
 - kolečko myši / trackpad, swipe na dotykových zařízeních
-- tlačítka prev/next v dolní liště
-- `Home` / `End` — skok na první/poslední slajd
-- `F` nebo tlačítko vpravo nahoře — fullscreen
-- `Esc` — opuštění fullscreen
+- `Home` / `End` — první/poslední slajd
+- `G` nebo tlačítko mřížky — přehled všech slajdů
+- `F` nebo tlačítko vpravo dole — celá obrazovka, `Esc` — zavření přehledu/náhledu
+- přímý odkaz na slajd: `index.html#14`
 
 ## Embedování do jiného webu
 
@@ -41,13 +41,13 @@ prezi-vyroci-knihtisku/
 ```
 
 - `allowfullscreen` (a `allow="fullscreen"`) je nutné pro funkční tlačítko fullscreen uvnitř iframe.
-- Aplikace je plně responzivní — kamera se při změně velikosti okna přepočítá.
-- Žádné externí závislosti kromě webfontu Google Fonts (Fraunces + Inter); pro plně
-  offline nasazení lze fonty stáhnout a odkaz v `assets/style.css` nahradit lokálním.
+- Scéna drží poměr 16:9; mimo něj se doplní barvou aktuálního slajdu. Nejlépe vypadá
+  v iframu 16:9, na výšku orientovaném mobilu se zobrazí zmenšeně.
+- Žádné externí závislosti — písma jsou součástí repozitáře.
 
 ## Úprava obsahu
 
 Veškerý text a přiřazení obrázků je v `assets/data.js` — jde o pole objektů, jedno
 na slajd, s poli `kind`, `eyebrow`, `title`, `paragraphs`, `images`, případně
-`table`. Rozložení "plátna" (pozice jednotlivých rámů) se počítá automaticky v
-`app.js` (`computeLayout`), není třeba jej ručně upravovat.
+`table`. Rozložení každého slajdu se počítá automaticky v `app.js` (`buildFigure`,
+`arrange`), není třeba jej ručně upravovat. Pole `width` z původní verze se již nepoužívá.
