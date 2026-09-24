@@ -407,3 +407,39 @@ button { font: inherit; color: inherit; }
 @keyframes zoomIn { from { opacity: 0; transform: scale(.96); } }
 
 .cap-side { padding-left: 22px; border-left: 1px solid var(--red); }
+
+/* ---------- Černá varianta ----------
+   Všechny slajdy kromě titulního: černé pozadí, bílé písmo.
+   Tokeny se předefinují na úrovni slajdu, takže je převezmou všechna
+   pravidla výše (text, popisky, linky, tabulka). */
+
+:root { --black: #000000; }
+
+.slide:not([data-kind="cover"]) {
+  --ink:        #FFFFFF;
+  --ink-soft:   rgba(255, 255, 255, .86);
+  --graphite:   #A3A3A3;
+  --rule:       rgba(255, 255, 255, .18);
+  --paper-deep: #141414;
+  --red:        #E4513A;   /* o stupeň světlejší kvůli kontrastu na černé */
+  --on-night:   #FFFFFF;
+  --on-night-mute: #A3A3A3;
+  background: var(--black);
+  color: var(--ink);
+}
+.slide:not([data-kind="cover"]) .body { color: var(--ink-soft); }
+.slide:not([data-kind="cover"]) .fig-img,
+.slide:not([data-kind="cover"]) .fig-img:hover { box-shadow: 0 0 0 1px rgba(255, 255, 255, .08); }
+.slide:not([data-kind="cover"]) .closing-meta { border-top-color: var(--rule); }
+.slide:not([data-kind="cover"]) .closing-glyph .grid line,
+.slide:not([data-kind="cover"]) .closing-glyph .grid rect,
+.slide:not([data-kind="cover"]) .closing-glyph .grid circle { stroke: rgba(255, 255, 255, .14); }
+
+/* předěl kapitoly: místo červené plochy černá, červená zůstává jako akcent */
+.slide.theme-red { background: var(--black); color: var(--ink); }
+.theme-red .runhead, .theme-red .folio { color: var(--graphite); }
+.theme-red .folio b { color: var(--ink); }
+.theme-red .runhead .dot { background: var(--red); }
+.theme-red .section-text .eyebrow { color: var(--red); }
+.theme-red .section-num { color: var(--red); opacity: .9; }
+.theme-red .section-sub { color: var(--graphite); }
