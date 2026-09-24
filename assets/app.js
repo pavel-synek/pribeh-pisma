@@ -547,9 +547,8 @@
   }
 
   function letterboxFor(slide) {
-    if (slide.classList.contains("theme-night")) return "var(--night)";
-    if (slide.classList.contains("theme-red")) return "var(--red)";
-    return "var(--paper)";
+    // titulní slajd má vlastní tmavý tón, ostatní jsou černé
+    return slide.dataset.kind === "cover" ? "var(--night)" : "var(--black)";
   }
 
   // ---------- navigation ----------

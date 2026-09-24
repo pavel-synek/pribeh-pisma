@@ -10,7 +10,7 @@ Papír, inkoust a jediná rumělková červená — odkaz na rubrikaci rukopisů
 Designová filozofie je v [`design/RUBRIKA-design-philosophy.md`](design/RUBRIKA-design-philosophy.md),
 key visual v `design/rubrika-key-visual.png`.
 
-- **Paleta:** papír `#F3EEE4`, inkoust `#17150F`, rumělka `#D2402A`, grafit `#857D6E`
+- **Paleta:** titulní slajd inkoust `#17150F`; ostatní slajdy černé pozadí `#000000`, bílé písmo, akcent rumělka `#E4513A`, grafit `#A3A3A3`
 - **Písma** (self-hosted, SIL OFL 1.1, `assets/fonts/`): Instrument Serif (titulky),
   Instrument Sans (text), IBM Plex Mono (inventární čísla, pagina)
 - **Scéna 1920 × 1080** se celá škáluje do okna/iframu — rozvržení je na každé obrazovce stejné.
